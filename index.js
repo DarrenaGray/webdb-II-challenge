@@ -72,11 +72,27 @@ server.put('/api/zoos/:id', (req, res) => {
 			if (updatedZoo) {
 				res.status(200).json({ message: 'Zoo info was successfully updated.' });
 			} else {
-				res.status(404).json({ message: 'The zoo with the specified ID was not found.' });
+				res.status(404).json({ message: 'The zoo with the specified ID could not be found.' });
 			}
 		})
 		.catch(err => {
 			res.status(500).json({ err, message: 'The zoo info could not be updated.' });
+		});
+});
+
+server.delete('/api/zoos/:id', (req, res) => {
+	db('zoos')
+		.where({ id: req.params.id })
+		.delete()
+		.then(deletedZoo => {
+			if (deletedZoo) {
+				res.status(200).json({ message: 'The zoo was successfully deleted.' });
+			} else {
+				res.status(404).json({ message: 'The zoo with the specified ID could not be found.' });
+			}
+		})
+		.catch(err => {
+			res.status(500).json({ err, message: 'The info could not be deleted' });
 		});
 });
 
