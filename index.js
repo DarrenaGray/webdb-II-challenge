@@ -20,6 +20,7 @@ server.use(helmet());
 server.get('/', (req, res) => {
 	res.send('Connected');
 });
+
 // endpoints here
 
 server.get('/api/zoos', (req, res) => {
@@ -29,6 +30,21 @@ server.get('/api/zoos', (req, res) => {
 		})
 		.catch(err => {
 			console.log(err);
+		});
+});
+
+server.post('/api/zoos', (req, res) => {
+	// INSERT INTO
+	db('zoos')
+		.insert(req.body, 'id')
+		.then(zoo => {
+			res.status(200).json(zoo);
+		})
+		.catch(err => {
+			res.status(500).json({
+				err,
+				message: 'There was an error while saving the zoo to the database.',
+			});
 		});
 });
 
