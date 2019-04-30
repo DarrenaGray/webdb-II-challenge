@@ -33,6 +33,22 @@ server.get('/api/zoos', (req, res) => {
 		});
 });
 
+server.get('/api/zoos/:id', (req, res) => {
+	db('zoos')
+		.where({ id: req.params.id })
+		.first()
+		.then(zoo => {
+			if (zoo) {
+				res.status(200).json(zoo);
+			} else {
+				res.status(404).json({ message: 'The zoo with the specified ID could not be found.' });
+			}
+		})
+		.catch(err => {
+			res.status(500).json(err);
+		});
+});
+
 server.post('/api/zoos', (req, res) => {
 	// INSERT INTO
 	db('zoos')
